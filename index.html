@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.A.R.V.I.S. | Blackburn Interface</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #030a10;
+    color: #00d9ff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #07516b;
+    padding: 15px 0;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+h1 {
+    letter-spacing: 5px;
+    font-size: 25px;
+    text-shadow: 0 0 12px #00cfff;
+}
+
+.status {
+    color: #00ff99;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+#clock {
+    font-size: 24px;
+    text-align: right;
+}
+
+#date {
+    font-size: 12px;
+    text-align: right;
+    color: #7abed0;
+}
+
+main {
+    max-width: 1200px;
+    margin: 25px auto;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 18px;
+}
+
+.panel {
+    background: rgba(0, 35, 50, 0.45);
+    border: 1px solid #07516b;
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.08);
+}
+
+.panel h2 {
+    font-size: 14px;
+    letter-spacing: 3px;
+    margin-bottom: 18px;
+    color: #00d9ff;
+}
+
+.center {
+    text-align: center;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.orb {
+    width: 175px;
+    height: 175px;
+    border-radius: 50%;
+    border: 3px solid #00cfff;
+    box-shadow: 0 0 25px #008bb5,
+                inset 0 0 30px #007a99;
+    position: relative;
+    animation: pulse 3s infinite;
+    margin-bottom: 25px;
+}
+
+.orb::before {
+    content: "";
+    position: absolute;
+    inset: 15px;
+    border: 2px solid #00bfff;
+    border-radius: 50%;
+    animation: rotate 8s linear infinite;
+}
+
+.orb::after {
+    content: "";
+    position: absolute;
+    inset: 35px;
+    border: 2px dashed #00d9ff;
+    border-radius: 50%;
+    animation: rotate 5s linear infinite reverse;
+}
+
+@keyframes pulse {
+    50% {
+        box-shadow: 0 0 45px #00cfff,
+                    inset 0 0 40px #007a99;
+    }
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+.visualizer {
+    display: flex;
+    gap: 5px;
+    height: 35px;
+    align-items: center;
+    margin: 15px;
+}
+
+.visualizer span {
+    width: 4px;
+    height: 8px;
+    background: #00d9ff;
+    border-radius: 5px;
+    transition: height .15s;
+}
+
+.visualizer.active span {
+    animation: sound .5s infinite alternate;
+}
+
+.visualizer span:nth-child(2n) {
+    animation-delay: .2s;
+}
+
+@keyframes sound {
+    to { height: 32px; }
+}
+
+button {
+    background: transparent;
+    border: 1px solid #00cfff;
+    color: #00d9ff;
+    padding: 10px 14px;
+    cursor: pointer;
+    margin: 4px;
+    border-radius: 4px;
+}
+
+button:hover {
+    background: #00394b;
+    box-shadow: 0 0 12px #00cfff;
+}
+
+input {
+    background: #06141d;
+    border: 1px solid #07516b;
+    color: white;
+    padding: 12px;
+    width: 100%;
+    outline: none;
+    margin: 6px 0;
+}
+
+.chat-box {
+    height: 280px;
+    overflow-y: auto;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.message {
+    margin-bottom: 12px;
+    overflow-wrap: anywhere;
+}
+
+.user {
+    color: white;
+}
+
+.jarvis {
+    color: #00d9ff;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
+    border-bottom: 1px solid #123c4c;
+    padding: 10px 0;
+    font-size: 13px;
+}
+
+.completed {
+    text-decoration: line-through;
+    opacity: .45;
+}
+
+.small {
+    font-size: 11px;
+    color: #6d9baa;
+    margin-top: 15px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: #397487;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+@media(max-width: 850px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        align-items: flex-start;
+    }
+
+    #clock {
+        text-align: left;
+    }
+
+    #date {
+        text-align: left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <h1>J.A.R.V.I.S.</h1>
+        <div class="status">● SYSTEM OPERATIONAL</div>
+    </div>
+
+    <div>
+        <div id="clock">00:00:00</div>
+        <div id="date">Loading...</div>
+    </div>
+</header>
+
+<main>
+
+<div class="dashboard">
+
+<!-- SYSTEM PANEL -->
+<section class="panel">
+    <h2>SYSTEM STATUS</h2>
+
+    <p>CORE SYSTEM: <span class="status">ONLINE</span></p>
+    <br>
+    <p>INTERFACE: ACTIVE</p>
+    <br>
+    <p>VOICE SYSTEM: READY</p>
+    <br>
+    <p>NETWORK: CONNECTED</p>
+    <br>
+    <p>AI STATUS: STANDBY</p>
+
+    <p class="small">
+        BLACKBURN PERSONAL INTERFACE
+    </p>
+</section>
+
+<!-- CENTRAL INTERFACE -->
+<section class="panel center">
+
+    <div class="orb"></div>
+
+    <h2>J.A.R.V.I.S.</h2>
+
+    <p id="systemMessage">
+        Awaiting your command, sir.
+    </p>
+
+    <div class="visualizer" id="visualizer">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span>
+    </div>
+
+    <div>
+        <button onclick="startListening()">VOICE INPUT</button>
+        <button onclick="stopListening()">STOP</button>
+    </div>
+
+    <button onclick="repeatResponse()">REPEAT RESPONSE</button>
+
+</section>
+
+<!-- TASK PANEL -->
+<section class="panel">
+
+    <h2>TASK MANAGEMENT</h2>
+
+    <input id="taskInput"
+           placeholder="Enter a new task...">
+
+    <button onclick="addTask()">ADD TASK</button>
+
+    <div id="taskList"></div>
+
+    <p class="small">TASKS ARE SAVED LOCALLY</p>
+
+</section>
+
+</div>
+
+<br>
+
+<!-- COMMUNICATION PANEL -->
+<section class="panel">
+
+    <h2>J.A.R.V.I.S. COMMUNICATION</h2>
+
+    <div class="chat-box" id="chatBox">
+        <div class="message jarvis">
+            J.A.R.V.I.S.: Good evening, sir.
+            All systems are operational.
+        </div>
+    </div>
+
+    <input id="chatInput"
+           placeholder="Enter your command..."
+           onkeydown="if(event.key==='Enter') sendMessage()">
+
+    <button onclick="sendMessage()">SEND</button>
+
+    <button onclick="clearChat()">CLEAR CHAT</button>
+
+</section>
+
+</main>
+
+<footer>
+    J.A.R.V.I.S. PERSONAL INTERFACE // BLACKBURN
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
