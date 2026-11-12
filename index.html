@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS | Personal Interface</title>
+
+<style>
+* { box-sizing:border-box; }
+
+body {
+    margin:0;
+    background:#030a12;
+    color:#8ceaff;
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+}
+
+header {
+    padding:20px;
+    border-bottom:1px solid #14516b;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.logo {
+    font-size:25px;
+    letter-spacing:5px;
+    text-shadow:0 0 15px #00cfff;
+}
+
+.status {
+    color:#42ffad;
+    font-size:12px;
+}
+
+main {
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:18px;
+}
+
+.panel {
+    background:rgba(5,25,40,.85);
+    border:1px solid #126080;
+    border-radius:12px;
+    padding:20px;
+    box-shadow:0 0 18px #00344955;
+}
+
+h2 {
+    font-size:14px;
+    letter-spacing:3px;
+    color:#48dfff;
+    border-bottom:1px solid #16465b;
+    padding-bottom:12px;
+}
+
+.clock {
+    font-size:38px;
+    text-align:center;
+    margin:25px 0 5px;
+    text-shadow:0 0 15px #00cfff;
+}
+
+.date {
+    text-align:center;
+    color:#80aebe;
+}
+
+.orb-area {
+    display:flex;
+    justify-content:center;
+    padding:25px;
+}
+
+.orb {
+    width:145px;
+    height:145px;
+    border:3px solid #29dfff;
+    border-radius:50%;
+    box-shadow:0 0 25px #00bfff, inset 0 0 25px #00bfff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    animation:pulse 3s infinite;
+}
+
+.orb span {
+    font-size:19px;
+    letter-spacing:3px;
+}
+
+@keyframes pulse {
+    50% { box-shadow:0 0 45px #00cfff,inset 0 0 35px #00cfff; }
+}
+
+button {
+    background:#073449;
+    border:1px solid #20cfff;
+    color:#9ceeff;
+    padding:11px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    margin:4px;
+}
+
+button:active {
+    background:#126080;
+}
+
+input {
+    background:#061622;
+    border:1px solid #14516b;
+    color:#fff;
+    padding:12px;
+    border-radius:6px;
+    width:100%;
+    margin:7px 0;
+}
+
+.task {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    border-bottom:1px solid #16465b;
+    gap:8px;
+}
+
+.task.done {
+    opacity:.45;
+    text-decoration:line-through;
+}
+
+#messages {
+    height:220px;
+    overflow-y:auto;
+    padding:10px;
+    color:#b7eaff;
+    font-size:14px;
+}
+
+.message {
+    margin:10px 0;
+    line-height:1.5;
+}
+
+.user { color:#fff; }
+.jarvis { color:#42dfff; }
+
+.visualizer {
+    height:65px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+}
+
+.bar {
+    width:5px;
+    height:8px;
+    background:#24dfff;
+    border-radius:5px;
+    transition:height .1s;
+}
+
+footer {
+    text-align:center;
+    padding:25px;
+    color:#456b7d;
+    font-size:11px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">J.A.R.V.I.S.</div>
+    <div class="status">● SYSTEM ONLINE</div>
+</header>
+
+<main>
+
+<div class="grid">
+
+<section class="panel">
+<h2>LOCAL TIME</h2>
+<div class="clock" id="clock">00:00:00</div>
+<div class="date" id="date"></div>
+</section>
+
+<section class="panel">
+<h2>ASSISTANT STATUS</h2>
+<div class="orb-area">
+<div class="orb"><span>J.A.R.V.I.S.</span></div>
+</div>
+<div style="text-align:center">ALL SYSTEMS STANDBY</div>
+</section>
+
+<section class="panel">
+<h2>VOICE VISUALIZER</h2>
+<div class="visualizer" id="visualizer"></div>
+<div style="text-align:center">
+<button onclick="startMic()">ACTIVATE MIC</button>
+<button onclick="stopMic()">STOP MIC</button>
+</div>
+</section>
+
+<section class="panel">
+<h2>TASK MANAGEMENT</h2>
+<input id="taskInput" placeholder="Enter a new task...">
+<button onclick="addTask()">ADD TASK</button>
+<div id="tasks"></div>
+</section>
+
+<section class="panel" style="grid-column:1/-1">
+<h2>JARVIS COMMUNICATION</h2>
+<div id="messages">
+<div class="message jarvis">
+JARVIS: Good day. All interface systems are operational. How may I assist you?
+</div>
+</div>
+<input id="chatInput" placeholder="Enter a message..." 
+onkeydown="if(event.key==='Enter')sendMessage()">
+<button onclick="sendMessage()">SEND</button>
+<button onclick="speakLast()">REPEAT RESPONSE</button>
+</section>
+
+</div>
+</main>
+
+<footer>
+JARVIS PERSONAL INTERFACE | SYSTEM VERSION 1.0
+</footer>
+
+<script>
+
+// CLOCK
+function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").textContent =
+        now.toLocaleTimeString();
+    document.getElementById("date").textContent =
+        now.toLocaleDateString(undefined,{
+            weekday:"long",year:"numeric",month:"long",day:"numeric"
+        });
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// TASK MANAGER
+let tasks = JSON.parse(localStorage.getItem("jarvisTasks") || "[]");
+
+function saveTasks() {
+    localStorage.setItem("jarvisTasks",JSON.stringify(tasks));
+    renderTasks();
+}
+
+function addTask() {
+    const input = document.getElementById("taskInput");
+    if(!input.value.trim()) return;
+    tasks.push({text:input.value,done:false});
+    input.value="";
+    saveTasks();
+}
+
+function renderTasks() {
+    document.getElementById("tasks").innerHTML =
+    tasks.map((task,i)=>`
+    <div class="task ${task.done?'done':''}">
+    <span onclick="toggleTask(${i})">${task.text}</span>
+    <button onclick="deleteTask(${i})">X</button>
+    </div>`).join("");
+}
+
+function toggleTask(i) {
+    tasks[i].done=!tasks[i].done;
+    saveTasks();
+}
+
+function deleteTask(i) {
+    tasks.splice(i,1);
+    saveTasks();
+}
+
+renderTasks();
+
+// CHAT
+let lastResponse="";
+
+function addMessage(text,type) {
+    const box=document.getElementById("messages");
+    const div=document.createElement("div");
+    div.className="message "+type;
+    div.textContent=text;
+    box.appendChild(div);
+    box.scrollTop=box.scrollHeight;
+}
+
+async function sendMessage() {
+    const input=document.getElementById("chatInput");
+    const message=input.value.trim();
+    if(!message)return;
+
+    input.value="";
+    addMessage("YOU: "+message,"user");
+
+    addMessage("JARVIS: Processing request...","jarvis");
+
+    const box=document.getElementById("messages");
+    const pending=box.lastElementChild;
+
+    try {
+        const response=await fetch("/.netlify/functions/chat",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({message})
+        });
+
+        const data=await response.json();
+
+        if(!response.ok) throw new Error(data.error || "Connection unavailable.");
+
+        lastResponse=data.reply;
+        pending.textContent="JARVIS: "+lastResponse;
+        speakLast();
+
+    } catch(error) {
+        pending.textContent=
+        "JARVIS: AI connection is not configured yet. My interface is operational, but my intelligence module still needs to be connected.";
+    }
+}
+
+function speakLast() {
+    if(!lastResponse)return;
+    const speech=new SpeechSynthesisUtterance(lastResponse);
+    speech.rate=1;
+    speech.pitch=1;
+    speechSynthesis.speak(speech);
+}
+
+// MICROPHONE AND VISUALIZER
+const visualizer=document.getElementById("visualizer");
+
+for(let i=0;i<25;i++){
+    const bar=document.createElement("div");
+    bar.className="bar";
+    visualizer.appendChild(bar);
+}
+
+let micStream=null;
+let audioContext=null;
+let animation=null;
+
+async function startMic() {
+    try {
+        micStream=await navigator.mediaDevices.getUserMedia({audio:true});
+        audioContext=new AudioContext();
+
+        const source=audioContext.createMediaStreamSource(micStream);
+        const analyser=audioContext.createAnalyser();
+        analyser.fftSize=64;
+        source.connect(analyser);
+
+        const data=new Uint8Array(analyser.frequencyBinCount);
+        const bars=document.querySelectorAll(".bar");
+
+        function animate() {
+            analyser.getByteFrequencyData(data);
+            bars.forEach((bar,i)=>{
+                bar.style.height=(5+data[i]*.45)+"px";
+            });
+            animation=requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Speech recognition, when supported
+        const SpeechRecognition=window.SpeechRecognition ||
+                               window.webkitSpeechRecognition;
+
+        if(SpeechRecognition) {
+            const recognition=new SpeechRecognition();
+            recognition.lang="en-US";
+            recognition.onresult=(event)=>{
+                document.getElementById("chatInput").value=
+                    event.results[0][0].transcript;
+            };
+            recognition.start();
+        }
+
+    } catch(error) {
+        alert("Microphone unavailable. Please check browser permissions.");
+    }
+}
+
+function stopMic() {
+    if(animation)cancelAnimationFrame(animation);
+    if(micStream)micStream.getTracks().forEach(track=>track.stop());
+    if(audioContext)audioContext.close();
+
+    document.querySelectorAll(".bar").forEach(bar=>{
+        bar.style.height="8px";
+    });
+}
+
+</script>
+</body>
+</html>
