@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>J.A.R.V.I.S. | Blackburn Interface</title>
+<title>JARVIS | Personal Interface</title>
 
 <style>
 * {
@@ -12,241 +12,336 @@
     padding: 0;
 }
 
+:root {
+    --blue: #00c8ff;
+    --blue2: #0077ff;
+    --bg: #030912;
+    --panel: rgba(0, 35, 65, 0.35);
+    --text: #d9f6ff;
+}
+
 body {
-    background: #030a10;
-    color: #00d9ff;
+    background: var(--bg);
+    color: var(--text);
     font-family: Arial, sans-serif;
     min-height: 100vh;
-    padding: 20px;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,200,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,.035) 1px, transparent 1px);
+    background-size: 35px 35px;
+    pointer-events: none;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, transparent 20%, #02060d 100%);
+    pointer-events: none;
 }
 
 header {
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #07516b;
-    padding: 15px 0;
-    flex-wrap: wrap;
-    gap: 15px;
+    border-bottom: 1px solid rgba(0,200,255,.25);
+    position: relative;
+    z-index: 2;
 }
 
-h1 {
-    letter-spacing: 5px;
-    font-size: 25px;
-    text-shadow: 0 0 12px #00cfff;
-}
-
-.status {
-    color: #00ff99;
-    font-size: 12px;
-    letter-spacing: 2px;
-}
-
-#clock {
+.logo {
+    color: var(--blue);
     font-size: 24px;
-    text-align: right;
+    letter-spacing: 5px;
+    font-weight: bold;
 }
 
-#date {
-    font-size: 12px;
-    text-align: right;
-    color: #7abed0;
+.system-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #6aaac4;
 }
 
 main {
     max-width: 1200px;
-    margin: 25px auto;
+    margin: auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.top-status {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--blue);
 }
 
 .dashboard {
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
-    gap: 18px;
+    gap: 15px;
 }
 
 .panel {
-    background: rgba(0, 35, 50, 0.45);
-    border: 1px solid #07516b;
+    border: 1px solid rgba(0,200,255,.35);
+    background: var(--panel);
     padding: 18px;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 200, 255, 0.08);
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,150,255,.07);
 }
 
-.panel h2 {
-    font-size: 14px;
-    letter-spacing: 3px;
+.panel-title {
+    color: var(--blue);
+    font-size: 11px;
+    letter-spacing: 2px;
     margin-bottom: 18px;
-    color: #00d9ff;
+    border-bottom: 1px solid rgba(0,200,255,.2);
+    padding-bottom: 10px;
 }
 
-.center {
+.clock {
+    font-size: 32px;
+    color: white;
     text-align: center;
-    min-height: 340px;
+    margin: 20px 0 5px;
+    letter-spacing: 3px;
+}
+
+.date {
+    text-align: center;
+    color: #6daec9;
+    font-size: 12px;
+}
+
+.core {
+    min-height: 280px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.orb {
-    width: 175px;
-    height: 175px;
+.reactor {
+    width: 145px;
+    height: 145px;
     border-radius: 50%;
-    border: 3px solid #00cfff;
-    box-shadow: 0 0 25px #008bb5,
-                inset 0 0 30px #007a99;
+    border: 2px solid var(--blue);
+    box-shadow: 0 0 15px var(--blue), inset 0 0 20px rgba(0,200,255,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    animation: pulse 3s infinite;
-    margin-bottom: 25px;
+    animation: pulse 3s infinite ease-in-out;
 }
 
-.orb::before {
+.reactor::before,
+.reactor::after {
     content: "";
     position: absolute;
-    inset: 15px;
-    border: 2px solid #00bfff;
+    inset: -12px;
+    border: 1px dashed var(--blue);
     border-radius: 50%;
-    animation: rotate 8s linear infinite;
+    animation: rotate 12s linear infinite;
 }
 
-.orb::after {
-    content: "";
-    position: absolute;
-    inset: 35px;
-    border: 2px dashed #00d9ff;
-    border-radius: 50%;
-    animation: rotate 5s linear infinite reverse;
+.reactor::after {
+    inset: -22px;
+    border-color: rgba(0,150,255,.5);
+    animation-direction: reverse;
+}
+
+.reactor span {
+    font-size: 35px;
+    color: var(--blue);
+    font-weight: bold;
+    letter-spacing: 3px;
 }
 
 @keyframes pulse {
-    50% {
-        box-shadow: 0 0 45px #00cfff,
-                    inset 0 0 40px #007a99;
-    }
+    50% { box-shadow: 0 0 35px var(--blue), inset 0 0 30px rgba(0,200,255,.6); }
 }
 
 @keyframes rotate {
     to { transform: rotate(360deg); }
 }
 
+.core-label {
+    margin-top: 35px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--blue);
+}
+
 .visualizer {
-    display: flex;
-    gap: 5px;
     height: 35px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    margin: 15px;
+    gap: 4px;
+    margin-top: 15px;
 }
 
 .visualizer span {
-    width: 4px;
+    width: 3px;
     height: 8px;
-    background: #00d9ff;
-    border-radius: 5px;
-    transition: height .15s;
+    background: var(--blue);
+    box-shadow: 0 0 8px var(--blue);
+    animation: wave .8s infinite alternate;
 }
 
-.visualizer.active span {
-    animation: sound .5s infinite alternate;
+.visualizer span:nth-child(2n) { animation-delay: .2s; }
+.visualizer span:nth-child(3n) { animation-delay: .4s; }
+
+@keyframes wave {
+    to { height: 30px; }
 }
 
-.visualizer span:nth-child(2n) {
-    animation-delay: .2s;
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin: 15px 0;
 }
 
-@keyframes sound {
-    to { height: 32px; }
+.online {
+    color: #00ffae;
 }
 
-button {
-    background: transparent;
-    border: 1px solid #00cfff;
-    color: #00d9ff;
-    padding: 10px 14px;
-    cursor: pointer;
-    margin: 4px;
-    border-radius: 4px;
-}
-
-button:hover {
-    background: #00394b;
-    box-shadow: 0 0 12px #00cfff;
-}
-
-input {
-    background: #06141d;
-    border: 1px solid #07516b;
-    color: white;
-    padding: 12px;
-    width: 100%;
-    outline: none;
-    margin: 6px 0;
-}
-
-.chat-box {
-    height: 280px;
+.tasks {
+    list-style: none;
+    max-height: 190px;
     overflow-y: auto;
-    font-size: 13px;
-    line-height: 1.6;
+}
+
+.tasks li {
+    padding: 9px;
+    border-bottom: 1px solid rgba(0,200,255,.15);
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tasks button {
+    background: transparent;
+    border: none;
+    color: #00ffae;
+    cursor: pointer;
+}
+
+.chat-panel {
+    margin-top: 18px;
+}
+
+.chat-log {
+    height: 260px;
+    overflow-y: auto;
+    padding: 12px;
+    background: rgba(0,0,0,.3);
+    border: 1px solid rgba(0,200,255,.15);
     margin-bottom: 12px;
 }
 
 .message {
-    margin-bottom: 12px;
-    overflow-wrap: anywhere;
-}
-
-.user {
-    color: white;
-}
-
-.jarvis {
-    color: #00d9ff;
-}
-
-.task {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 5px;
-    border-bottom: 1px solid #123c4c;
-    padding: 10px 0;
+    margin-bottom: 14px;
     font-size: 13px;
+    line-height: 1.6;
 }
 
-.completed {
-    text-decoration: line-through;
-    opacity: .45;
+.jarvis-message {
+    color: var(--blue);
 }
 
-.small {
-    font-size: 11px;
-    color: #6d9baa;
+.user-message {
+    color: white;
+    text-align: right;
+}
+
+.input-area {
+    display: flex;
+    gap: 8px;
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    background: #061522;
+    border: 1px solid rgba(0,200,255,.4);
+    padding: 13px;
+    color: white;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--blue);
+}
+
+.send-btn {
+    background: rgba(0,150,255,.2);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    padding: 0 20px;
+    cursor: pointer;
+}
+
+.send-btn:hover {
+    background: var(--blue);
+    color: black;
+}
+
+.quick-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-top: 15px;
+}
+
+.quick-buttons button {
+    background: transparent;
+    border: 1px solid rgba(0,200,255,.35);
+    color: #8bdfff;
+    padding: 9px;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.quick-buttons button:hover {
+    background: rgba(0,200,255,.15);
 }
 
 footer {
     text-align: center;
-    margin-top: 30px;
-    color: #397487;
-    font-size: 11px;
+    padding: 25px;
+    font-size: 10px;
+    color: #416b80;
     letter-spacing: 2px;
 }
 
-@media(max-width: 850px) {
+@media(max-width: 800px) {
     .dashboard {
         grid-template-columns: 1fr;
     }
 
+    .clock {
+        font-size: 27px;
+    }
+
     header {
-        align-items: flex-start;
-    }
-
-    #clock {
-        text-align: left;
-    }
-
-    #date {
-        text-align: left;
+        flex-direction: column;
+        gap: 10px;
     }
 }
 </style>
@@ -255,117 +350,432 @@ footer {
 <body>
 
 <header>
-    <div>
-        <h1>J.A.R.V.I.S.</h1>
-        <div class="status">● SYSTEM OPERATIONAL</div>
-    </div>
-
-    <div>
-        <div id="clock">00:00:00</div>
-        <div id="date">Loading...</div>
-    </div>
+    <div class="logo">J.A.R.V.I.S.</div>
+    <div class="system-label">PERSONAL ASSISTANT INTERFACE // V2.0</div>
 </header>
 
 <main>
 
+<div class="top-status">
+    <span>● SYSTEM ONLINE</span>
+    <span id="header-time">INITIALIZING</span>
+</div>
+
 <div class="dashboard">
 
-<!-- SYSTEM PANEL -->
-<section class="panel">
-    <h2>SYSTEM STATUS</h2>
+    <section class="panel">
+        <div class="panel-title">TEMPORAL SYSTEM</div>
+        <div class="clock" id="clock">00:00:00</div>
+        <div class="date" id="date">Loading...</div>
 
-    <p>CORE SYSTEM: <span class="status">ONLINE</span></p>
-    <br>
-    <p>INTERFACE: ACTIVE</p>
-    <br>
-    <p>VOICE SYSTEM: READY</p>
-    <br>
-    <p>NETWORK: CONNECTED</p>
-    <br>
-    <p>AI STATUS: STANDBY</p>
+        <br><br>
 
-    <p class="small">
-        BLACKBURN PERSONAL INTERFACE
-    </p>
-</section>
+        <div class="panel-title">SYSTEM DIAGNOSTICS</div>
 
-<!-- CENTRAL INTERFACE -->
-<section class="panel center">
+        <div class="status-row">
+            <span>Interface</span>
+            <span class="online">ONLINE</span>
+        </div>
 
-    <div class="orb"></div>
+        <div class="status-row">
+            <span>Command Engine</span>
+            <span class="online">READY</span>
+        </div>
 
-    <h2>J.A.R.V.I.S.</h2>
+        <div class="status-row">
+            <span>Local Storage</span>
+            <span class="online" id="storage-status">CHECKING</span>
+        </div>
 
-    <p id="systemMessage">
-        Awaiting your command, sir.
-    </p>
+        <div class="status-row">
+            <span>AI Connection</span>
+            <span style="color:#ffbd4a">NOT CONNECTED</span>
+        </div>
+    </section>
 
-    <div class="visualizer" id="visualizer">
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-        <span></span>
-    </div>
+    <section class="panel core">
+        <div class="reactor">
+            <span>J</span>
+        </div>
 
-    <div>
-        <button onclick="startListening()">VOICE INPUT</button>
-        <button onclick="stopListening()">STOP</button>
-    </div>
+        <div class="core-label">JARVIS CORE</div>
 
-    <button onclick="repeatResponse()">REPEAT RESPONSE</button>
+        <div class="visualizer">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+        </div>
 
-</section>
+        <div style="font-size:10px;color:#6daec9;margin-top:10px">
+            COMMAND PROCESSOR ACTIVE
+        </div>
+    </section>
 
-<!-- TASK PANEL -->
-<section class="panel">
+    <section class="panel">
+        <div class="panel-title">TASK MANAGEMENT</div>
 
-    <h2>TASK MANAGEMENT</h2>
+        <div id="task-count" style="color:var(--blue);font-size:13px;margin-bottom:15px">
+            0 ACTIVE TASKS
+        </div>
 
-    <input id="taskInput"
-           placeholder="Enter a new task...">
+        <ul class="tasks" id="task-list"></ul>
 
-    <button onclick="addTask()">ADD TASK</button>
+        <br>
 
-    <div id="taskList"></div>
-
-    <p class="small">TASKS ARE SAVED LOCALLY</p>
-
-</section>
+        <div class="panel-title">PERSONAL MEMORY</div>
+        <div id="memory-count" style="font-size:12px;color:#8bdfff">
+            0 STORED NOTES
+        </div>
+    </section>
 
 </div>
 
-<br>
+<section class="panel chat-panel">
 
-<!-- COMMUNICATION PANEL -->
-<section class="panel">
+    <div class="panel-title">JARVIS INTERFACE / COMMAND TERMINAL</div>
 
-    <h2>J.A.R.V.I.S. COMMUNICATION</h2>
-
-    <div class="chat-box" id="chatBox">
-        <div class="message jarvis">
-            J.A.R.V.I.S.: Good evening, sir.
-            All systems are operational.
+    <div class="chat-log" id="chat-log">
+        <div class="message jarvis-message">
+            JARVIS: Systems initialized. Good to see you. How may I assist?
         </div>
     </div>
 
-    <input id="chatInput"
-           placeholder="Enter your command..."
-           onkeydown="if(event.key==='Enter') sendMessage()">
+    <div class="input-area">
+        <input id="command-input"
+        type="text"
+        placeholder="Enter command..."
+        autocomplete="off">
 
-    <button onclick="sendMessage()">SEND</button>
+        <button class="send-btn" onclick="sendCommand()">
+            SEND
+        </button>
+    </div>
 
-    <button onclick="clearChat()">CLEAR CHAT</button>
+    <div class="quick-buttons">
+        <button onclick="quickCommand('System status')">SYSTEM STATUS</button>
+        <button onclick="quickCommand('Show tasks')">TASKS</button>
+        <button onclick="quickCommand('What do you remember?')">MEMORY</button>
+        <button onclick="quickCommand('What time is it?')">TIME</button>
+        <button onclick="quickCommand('Help')">HELP</button>
+    </div>
 
 </section>
 
 </main>
 
 <footer>
-    J.A.R.V.I.S. PERSONAL INTERFACE // BLACKBURN
+    J.A.R.V.I.S. // PERSONAL INTERFACE // LOCAL COMMAND SYSTEM
 </footer>
 
-<script src="script.js"></script>
+<script>
+
+// STORAGE
+
+function getData(key) {
+    try {
+        return JSON.parse(localStorage.getItem(key)) || [];
+    } catch {
+        return [];
+    }
+}
+
+function saveData(key, data) {
+    try {
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+let tasks = getData("jarvis_tasks");
+let memories = getData("jarvis_memories");
+
+// CLOCK
+
+function updateClock() {
+    const now = new Date();
+
+    document.getElementById("clock").textContent =
+        now.toLocaleTimeString();
+
+    document.getElementById("date").textContent =
+        now.toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+    document.getElementById("header-time").textContent =
+        now.toLocaleDateString() + " // " + now.toLocaleTimeString();
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+// TASK DISPLAY
+
+function renderTasks() {
+    const list = document.getElementById("task-list");
+    list.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+
+        const name = document.createElement("span");
+        name.textContent = task;
+
+        const done = document.createElement("button");
+        done.textContent = "✓";
+        done.title = "Complete task";
+        done.onclick = () => {
+            tasks.splice(index, 1);
+            saveData("jarvis_tasks", tasks);
+            renderTasks();
+        };
+
+        li.appendChild(name);
+        li.appendChild(done);
+        list.appendChild(li);
+    });
+
+    document.getElementById("task-count").textContent =
+        tasks.length + " ACTIVE TASKS";
+}
+
+function renderMemories() {
+    document.getElementById("memory-count").textContent =
+        memories.length + " STORED NOTES";
+}
+
+renderTasks();
+renderMemories();
+
+// CHAT
+
+function addMessage(text, sender) {
+    const log = document.getElementById("chat-log");
+    const message = document.createElement("div");
+
+    message.className = "message " +
+        (sender === "jarvis" ? "jarvis-message" : "user-message");
+
+    message.textContent =
+        (sender === "jarvis" ? "JARVIS: " : "YOU: ") + text;
+
+    log.appendChild(message);
+    log.scrollTop = log.scrollHeight;
+}
+
+function reply(text) {
+    addMessage(text, "jarvis");
+}
+
+function sendCommand() {
+    const input = document.getElementById("command-input");
+    const command = input.value.trim();
+
+    if (!command) return;
+
+    addMessage(command, "user");
+    input.value = "";
+
+    processCommand(command);
+}
+
+function quickCommand(command) {
+    document.getElementById("command-input").value = command;
+    sendCommand();
+}
+
+// COMMAND PROCESSOR
+
+function processCommand(original) {
+    const command = original.toLowerCase().trim();
+
+    if (
+        command === "hello jarvis" ||
+        command === "hello" ||
+        command === "hi" ||
+        command === "hey jarvis"
+    ) {
+        reply("Hello. All systems are operational. How can I assist you?");
+        return;
+    }
+
+    if (
+        command.includes("what time") ||
+        command === "time"
+    ) {
+        reply("The current time is " + new Date().toLocaleTimeString());
+        return;
+    }
+
+    if (
+        command.includes("what date") ||
+        command.includes("today's date")
+    ) {
+        reply("Today is " + new Date().toDateString());
+        return;
+    }
+
+    if (command.startsWith("add task ")) {
+        const task = original.substring(9).trim();
+
+        if (!task) {
+            reply("Please specify a task.");
+            return;
+        }
+
+        tasks.push(task);
+        saveData("jarvis_tasks", tasks);
+        renderTasks();
+
+        reply("Task added successfully: " + task);
+        return;
+    }
+
+    if (
+        command === "show tasks" ||
+        command === "list tasks" ||
+        command === "my tasks"
+    ) {
+        if (tasks.length === 0) {
+            reply("Your task list is currently empty.");
+        } else {
+            reply("Your active tasks: " +
+                tasks.map((t, i) => (i + 1) + ". " + t).join("; "));
+        }
+        return;
+    }
+
+    if (command.startsWith("complete task ")) {
+        const number = parseInt(command.replace("complete task ", ""));
+
+        if (number > 0 && number <= tasks.length) {
+            const completed = tasks.splice(number - 1, 1)[0];
+            saveData("jarvis_tasks", tasks);
+            renderTasks();
+            reply("Task completed: " + completed);
+        } else {
+            reply("I couldn't find that task number.");
+        }
+        return;
+    }
+
+    if (command.startsWith("remember ")) {
+        const note = original.substring(9).trim();
+
+        if (!note) {
+            reply("Please specify what you would like me to remember.");
+            return;
+        }
+
+        memories.push(note);
+        saveData("jarvis_memories", memories);
+        renderMemories();
+
+        reply("Information stored in local memory.");
+        return;
+    }
+
+    if (
+        command.includes("what do you remember") ||
+        command === "show memories" ||
+        command === "show memory"
+    ) {
+        if (memories.length === 0) {
+            reply("My memory database is currently empty.");
+        } else {
+            reply("Stored memories: " +
+                memories.map((m, i) => (i + 1) + ". " + m).join("; "));
+        }
+        return;
+    }
+
+    if (command === "system status" || command === "status") {
+        reply(
+            "System report: Interface operational. " +
+            "Command processor active. " +
+            "Local storage available: " +
+            (storageAvailable() ? "YES." : "NO.") +
+            " Active tasks: " + tasks.length +
+            ". Stored memories: " + memories.length +
+            ". External AI connection: unavailable."
+        );
+        return;
+    }
+
+    if (command === "clear tasks") {
+        tasks = [];
+        saveData("jarvis_tasks", tasks);
+        renderTasks();
+        reply("All tasks cleared.");
+        return;
+    }
+
+    if (command === "clear memories") {
+        memories = [];
+        saveData("jarvis_memories", memories);
+        renderMemories();
+        reply("All stored memories cleared.");
+        return;
+    }
+
+    if (command === "open youtube") {
+        reply("Opening YouTube.");
+        window.open("https://www.youtube.com", "_blank");
+        return;
+    }
+
+    if (
+        command === "help" ||
+        command === "commands"
+    ) {
+        reply(
+            "Available commands: Hello JARVIS, What time is it, " +
+            "Add task [name], Show tasks, Complete task [number], " +
+            "Remember [note], What do you remember, System status, " +
+            "Open YouTube, Clear tasks, Clear memories."
+        );
+        return;
+    }
+
+    reply(
+        "I'm sorry, but I don't recognize that command. " +
+        "Try saying Help to see my available commands."
+    );
+}
+
+// STORAGE DIAGNOSTICS
+
+function storageAvailable() {
+    try {
+        const test = "__jarvis_test__";
+        localStorage.setItem(test, "1");
+        localStorage.removeItem(test);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+document.getElementById("storage-status").textContent =
+    storageAvailable() ? "AVAILABLE" : "UNAVAILABLE";
+
+// ENTER KEY
+
+document.getElementById("command-input")
+.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        sendCommand();
+    }
+});
+
+</script>
 
 </body>
 </html>
