@@ -3,21 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JARVIS | Personal Interface</title>
+<title>JARVIS | Personal Intelligence</title>
 
 <style>
+:root {
+    --blue: #00cfff;
+    --blue2: #087bff;
+    --bg: #020711;
+    --panel: rgba(0,35,65,.48);
+    --text: #d8f5ff;
+    --green: #00ffb0;
+    --muted: #6895ad;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-:root {
-    --blue: #00c8ff;
-    --blue2: #0077ff;
-    --bg: #030912;
-    --panel: rgba(0, 35, 65, 0.35);
-    --text: #d9f6ff;
 }
 
 body {
@@ -33,8 +35,8 @@ body::before {
     position: fixed;
     inset: 0;
     background:
-        linear-gradient(rgba(0,200,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,200,255,.035) 1px, transparent 1px);
+      linear-gradient(rgba(0,200,255,.035) 1px, transparent 1px),
+      linear-gradient(90deg,rgba(0,200,255,.035) 1px,transparent 1px);
     background-size: 35px 35px;
     pointer-events: none;
 }
@@ -43,232 +45,274 @@ body::after {
     content: "";
     position: fixed;
     inset: 0;
-    background: radial-gradient(circle, transparent 20%, #02060d 100%);
+    background: radial-gradient(ellipse at center,
+      transparent 10%, #020711 100%);
     pointer-events: none;
 }
 
 header {
+    position: relative;
+    z-index: 2;
     padding: 20px;
+    border-bottom: 1px solid rgba(0,200,255,.3);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(0,200,255,.25);
-    position: relative;
-    z-index: 2;
 }
 
 .logo {
     color: var(--blue);
-    font-size: 24px;
-    letter-spacing: 5px;
+    font-size: 25px;
     font-weight: bold;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px var(--blue);
 }
 
-.system-label {
+.header-right {
+    text-align: right;
     font-size: 10px;
+    color: var(--muted);
     letter-spacing: 2px;
-    color: #6aaac4;
+    line-height: 1.8;
 }
 
 main {
-    max-width: 1200px;
+    max-width: 1350px;
     margin: auto;
     padding: 20px;
     position: relative;
     z-index: 1;
 }
 
-.top-status {
+.system-bar {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 20px;
-    font-size: 11px;
-    letter-spacing: 2px;
+    gap: 10px;
     color: var(--blue);
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
-.dashboard {
+.indicator {
+    color: var(--green);
+}
+
+.layout {
     display: grid;
     grid-template-columns: 1fr 1.5fr 1fr;
     gap: 15px;
 }
 
 .panel {
-    border: 1px solid rgba(0,200,255,.35);
     background: var(--panel);
-    padding: 18px;
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0,150,255,.07);
+    border: 1px solid rgba(0,200,255,.32);
+    border-radius: 4px;
+    padding: 17px;
+    box-shadow: 0 0 20px rgba(0,140,255,.07);
+    backdrop-filter: blur(5px);
 }
 
 .panel-title {
     color: var(--blue);
     font-size: 11px;
     letter-spacing: 2px;
-    margin-bottom: 18px;
+    padding-bottom: 12px;
     border-bottom: 1px solid rgba(0,200,255,.2);
-    padding-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .clock {
-    font-size: 32px;
-    color: white;
-    text-align: center;
-    margin: 20px 0 5px;
+    font-size: 31px;
     letter-spacing: 3px;
+    text-align: center;
+    color: white;
+    margin: 20px 0 7px;
+    text-shadow: 0 0 15px var(--blue);
 }
 
 .date {
-    text-align: center;
-    color: #6daec9;
-    font-size: 12px;
-}
-
-.core {
-    min-height: 280px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.reactor {
-    width: 145px;
-    height: 145px;
-    border-radius: 50%;
-    border: 2px solid var(--blue);
-    box-shadow: 0 0 15px var(--blue), inset 0 0 20px rgba(0,200,255,.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    animation: pulse 3s infinite ease-in-out;
-}
-
-.reactor::before,
-.reactor::after {
-    content: "";
-    position: absolute;
-    inset: -12px;
-    border: 1px dashed var(--blue);
-    border-radius: 50%;
-    animation: rotate 12s linear infinite;
-}
-
-.reactor::after {
-    inset: -22px;
-    border-color: rgba(0,150,255,.5);
-    animation-direction: reverse;
-}
-
-.reactor span {
-    font-size: 35px;
-    color: var(--blue);
-    font-weight: bold;
-    letter-spacing: 3px;
-}
-
-@keyframes pulse {
-    50% { box-shadow: 0 0 35px var(--blue), inset 0 0 30px rgba(0,200,255,.6); }
-}
-
-@keyframes rotate {
-    to { transform: rotate(360deg); }
-}
-
-.core-label {
-    margin-top: 35px;
+    color: var(--muted);
     font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--blue);
-}
-
-.visualizer {
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px;
-    margin-top: 15px;
-}
-
-.visualizer span {
-    width: 3px;
-    height: 8px;
-    background: var(--blue);
-    box-shadow: 0 0 8px var(--blue);
-    animation: wave .8s infinite alternate;
-}
-
-.visualizer span:nth-child(2n) { animation-delay: .2s; }
-.visualizer span:nth-child(3n) { animation-delay: .4s; }
-
-@keyframes wave {
-    to { height: 30px; }
+    text-align: center;
 }
 
 .status-row {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    gap: 8px;
+    font-size: 11px;
     margin: 15px 0;
 }
 
-.online {
-    color: #00ffae;
-}
+.good { color: var(--green); }
+.warning { color: #ffbd55; }
+.muted { color: var(--muted); }
 
-.tasks {
-    list-style: none;
-    max-height: 190px;
-    overflow-y: auto;
-}
-
-.tasks li {
-    padding: 9px;
-    border-bottom: 1px solid rgba(0,200,255,.15);
-    font-size: 12px;
+.core-panel {
+    min-height: 330px;
     display: flex;
-    justify-content: space-between;
-    gap: 8px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.tasks button {
-    background: transparent;
-    border: none;
-    color: #00ffae;
-    cursor: pointer;
+.reactor {
+    width: 175px;
+    height: 175px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    box-shadow: 0 0 20px var(--blue),
+                inset 0 0 30px rgba(0,200,255,.4);
+    animation: reactorPulse 3s infinite ease-in-out;
+}
+
+.reactor::before {
+    content: "";
+    position: absolute;
+    inset: -13px;
+    border: 1px dashed var(--blue);
+    border-radius: 50%;
+    animation: spin 15s linear infinite;
+}
+
+.reactor::after {
+    content: "";
+    position: absolute;
+    inset: -26px;
+    border: 1px solid rgba(0,200,255,.4);
+    border-radius: 50%;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    animation: spin 9s linear infinite reverse;
+}
+
+.reactor-inner {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle,
+        rgba(0,200,255,.4),
+        rgba(0,30,60,.1) 70%);
+    border: 1px solid rgba(0,200,255,.7);
+    box-shadow: inset 0 0 25px var(--blue);
+}
+
+.reactor-inner span {
+    font-size: 44px;
+    color: white;
+    text-shadow: 0 0 20px var(--blue);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes reactorPulse {
+    50% {
+        box-shadow: 0 0 45px var(--blue),
+        inset 0 0 35px rgba(0,200,255,.7);
+    }
+}
+
+.core-label {
+    margin-top: 38px;
+    color: var(--blue);
+    font-size: 12px;
+    letter-spacing: 5px;
+}
+
+.core-status {
+    color: var(--muted);
+    font-size: 9px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+.radar {
+    width: 150px;
+    height: 150px;
+    margin: 5px auto;
+    border-radius: 50%;
+    border: 1px solid rgba(0,200,255,.65);
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(90deg,transparent 49.5%,rgba(0,200,255,.3) 50%,transparent 50.5%),
+      linear-gradient(transparent 49.5%,rgba(0,200,255,.3) 50%,transparent 50.5%),
+      radial-gradient(circle,transparent 30%,rgba(0,200,255,.2) 31%,transparent 32%,transparent 60%,rgba(0,200,255,.2) 61%,transparent 62%);
+}
+
+.radar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: conic-gradient(from 0deg,
+        transparent 0deg,
+        transparent 280deg,
+        rgba(0,200,255,.5) 360deg);
+    animation: spin 4s linear infinite;
+}
+
+.radar-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    position: absolute;
+    top: 30%;
+    left: 65%;
+    box-shadow: 0 0 10px var(--green);
+}
+
+.activity {
+    height: 180px;
+    overflow-y: auto;
+    font-size: 10px;
+}
+
+.activity-entry {
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(0,200,255,.12);
+    line-height: 1.5;
+    color: #9acde0;
+}
+
+.activity-entry span {
+    color: var(--blue);
 }
 
 .chat-panel {
-    margin-top: 18px;
+    margin-top: 17px;
 }
 
 .chat-log {
-    height: 260px;
+    height: 230px;
     overflow-y: auto;
     padding: 12px;
-    background: rgba(0,0,0,.3);
-    border: 1px solid rgba(0,200,255,.15);
+    background: rgba(0,0,0,.35);
+    border: 1px solid rgba(0,200,255,.2);
     margin-bottom: 12px;
 }
 
 .message {
-    margin-bottom: 14px;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 13px;
+    overflow-wrap: anywhere;
 }
 
-.jarvis-message {
-    color: var(--blue);
-}
-
-.user-message {
-    color: white;
-    text-align: right;
-}
+.jarvis-message { color: var(--blue); }
+.user-message { color: white; text-align: right; }
 
 .input-area {
     display: flex;
@@ -276,73 +320,122 @@ main {
 }
 
 input {
-    flex: 1;
     min-width: 0;
-    background: #061522;
-    border: 1px solid rgba(0,200,255,.4);
+    flex: 1;
     padding: 13px;
+    background: #061522;
     color: white;
+    border: 1px solid rgba(0,200,255,.4);
     outline: none;
 }
 
 input:focus {
     border-color: var(--blue);
+    box-shadow: 0 0 10px rgba(0,200,255,.2);
 }
 
-.send-btn {
-    background: rgba(0,150,255,.2);
-    color: var(--blue);
-    border: 1px solid var(--blue);
-    padding: 0 20px;
+button {
     cursor: pointer;
+    font-family: inherit;
 }
 
-.send-btn:hover {
+.action-btn {
+    background: rgba(0,130,255,.15);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    padding: 11px 14px;
+}
+
+.action-btn:hover {
     background: var(--blue);
     color: black;
 }
 
-.quick-buttons {
+.controls {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 15px;
+    margin-top: 14px;
 }
 
-.quick-buttons button {
+.controls button {
     background: transparent;
     border: 1px solid rgba(0,200,255,.35);
-    color: #8bdfff;
+    color: #91dfff;
     padding: 9px;
-    font-size: 10px;
-    cursor: pointer;
+    font-size: 9px;
+    letter-spacing: 1px;
 }
 
-.quick-buttons button:hover {
-    background: rgba(0,200,255,.15);
+.controls button:active {
+    background: rgba(0,200,255,.2);
+}
+
+.task-list {
+    list-style: none;
+    max-height: 170px;
+    overflow-y: auto;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 0;
+    font-size: 11px;
+    border-bottom: 1px solid rgba(0,200,255,.15);
+}
+
+.task-list button {
+    color: var(--green);
+    border: none;
+    background: transparent;
+    font-size: 15px;
+}
+
+.voice-bars {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 12px;
+}
+
+.voice-bars span {
+    height: 7px;
+    width: 3px;
+    background: var(--blue);
+    box-shadow: 0 0 7px var(--blue);
+}
+
+.voice-bars.active span {
+    animation: voiceWave .65s infinite alternate;
+}
+
+.voice-bars span:nth-child(2n) { animation-delay: .2s; }
+.voice-bars span:nth-child(3n) { animation-delay: .35s; }
+
+@keyframes voiceWave {
+    to { height: 25px; }
 }
 
 footer {
+    position: relative;
+    z-index: 1;
     text-align: center;
     padding: 25px;
-    font-size: 10px;
-    color: #416b80;
+    font-size: 9px;
+    color: #426d82;
     letter-spacing: 2px;
 }
 
-@media(max-width: 800px) {
-    .dashboard {
-        grid-template-columns: 1fr;
-    }
-
-    .clock {
-        font-size: 27px;
-    }
-
-    header {
-        flex-direction: column;
-        gap: 10px;
-    }
+@media(max-width:850px) {
+    .layout { grid-template-columns: 1fr; }
+    header { flex-direction: column; gap: 10px; }
+    .header-right { text-align: center; }
+    .reactor { width: 155px; height: 155px; }
+    .clock { font-size: 27px; }
 }
 </style>
 </head>
@@ -351,94 +444,127 @@ footer {
 
 <header>
     <div class="logo">J.A.R.V.I.S.</div>
-    <div class="system-label">PERSONAL ASSISTANT INTERFACE // V2.0</div>
+    <div class="header-right">
+        PERSONAL INTELLIGENCE INTERFACE<br>
+        SYSTEM VERSION 2.5
+    </div>
 </header>
 
 <main>
 
-<div class="top-status">
-    <span>● SYSTEM ONLINE</span>
+<div class="system-bar">
+    <span><span class="indicator">●</span> SYSTEM ONLINE</span>
     <span id="header-time">INITIALIZING</span>
+    <span>LOCAL COMMAND ENGINE</span>
 </div>
 
-<div class="dashboard">
+<div class="layout">
 
-    <section class="panel">
-        <div class="panel-title">TEMPORAL SYSTEM</div>
-        <div class="clock" id="clock">00:00:00</div>
-        <div class="date" id="date">Loading...</div>
+<section class="panel">
+    <div class="panel-title">TEMPORAL SYSTEM</div>
+    <div class="clock" id="clock">00:00:00</div>
+    <div class="date" id="date">Loading...</div>
 
-        <br><br>
+    <br><br>
 
-        <div class="panel-title">SYSTEM DIAGNOSTICS</div>
+    <div class="panel-title">SYSTEM DIAGNOSTICS</div>
 
-        <div class="status-row">
-            <span>Interface</span>
-            <span class="online">ONLINE</span>
-        </div>
+    <div class="status-row">
+        <span>Interface</span><span class="good">ONLINE</span>
+    </div>
+    <div class="status-row">
+        <span>Command Engine</span><span class="good">ACTIVE</span>
+    </div>
+    <div class="status-row">
+        <span>Local Memory</span><span id="storage-status">CHECKING</span>
+    </div>
+    <div class="status-row">
+        <span>Voice Output</span><span id="voice-status" class="warning">CHECKING</span>
+    </div>
+    <div class="status-row">
+        <span>AI Connection</span><span class="warning">OFFLINE</span>
+    </div>
+    <div class="status-row">
+        <span>Security</span><span class="good">LOCAL</span>
+    </div>
+</section>
 
-        <div class="status-row">
-            <span>Command Engine</span>
-            <span class="online">READY</span>
-        </div>
+<section class="panel core-panel">
+    <div class="reactor">
+        <div class="reactor-inner"><span>J</span></div>
+    </div>
 
-        <div class="status-row">
-            <span>Local Storage</span>
-            <span class="online" id="storage-status">CHECKING</span>
-        </div>
+    <div class="core-label">JARVIS CORE</div>
+    <div class="core-status" id="core-status">SYSTEM STANDBY</div>
 
-        <div class="status-row">
-            <span>AI Connection</span>
-            <span style="color:#ffbd4a">NOT CONNECTED</span>
-        </div>
-    </section>
+    <div class="voice-bars" id="voice-bars">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+    </div>
+</section>
 
-    <section class="panel core">
-        <div class="reactor">
-            <span>J</span>
-        </div>
+<section class="panel">
+    <div class="panel-title">SCANNING RADAR</div>
+    <div class="radar">
+        <div class="radar-dot"></div>
+    </div>
 
-        <div class="core-label">JARVIS CORE</div>
+    <div class="panel-title" style="margin-top:20px">
+        MEMORY DATABASE
+    </div>
 
-        <div class="visualizer">
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-            <span></span><span></span><span></span>
-        </div>
+    <div class="status-row">
+        <span>Stored Notes</span>
+        <span id="memory-count" class="good">0</span>
+    </div>
 
-        <div style="font-size:10px;color:#6daec9;margin-top:10px">
-            COMMAND PROCESSOR ACTIVE
-        </div>
-    </section>
+    <div class="status-row">
+        <span>Active Tasks</span>
+        <span id="task-count" class="good">0</span>
+    </div>
+</section>
 
-    <section class="panel">
-        <div class="panel-title">TASK MANAGEMENT</div>
+</div>
 
-        <div id="task-count" style="color:var(--blue);font-size:13px;margin-bottom:15px">
-            0 ACTIVE TASKS
-        </div>
+<div class="layout" style="margin-top:16px">
 
-        <ul class="tasks" id="task-list"></ul>
+<section class="panel">
+    <div class="panel-title">TASK MANAGEMENT</div>
+    <ul class="task-list" id="task-list"></ul>
+</section>
 
-        <br>
+<section class="panel">
+    <div class="panel-title">SYSTEM ACTIVITY FEED</div>
+    <div class="activity" id="activity"></div>
+</section>
 
-        <div class="panel-title">PERSONAL MEMORY</div>
-        <div id="memory-count" style="font-size:12px;color:#8bdfff">
-            0 STORED NOTES
-        </div>
-    </section>
+<section class="panel">
+    <div class="panel-title">VOICE CONTROLS</div>
+    <div class="status-row">
+        <span>Speech Output</span>
+        <span id="speech-setting" class="good">ON</span>
+    </div>
+
+    <div class="controls">
+        <button onclick="toggleSpeech()">TOGGLE VOICE</button>
+        <button onclick="startListening()">MICROPHONE</button>
+        <button onclick="stopSpeech()">STOP SPEECH</button>
+    </div>
+
+    <div style="font-size:10px;color:var(--muted);margin-top:15px">
+        Voice recognition depends on browser support and microphone permissions.
+    </div>
+</section>
 
 </div>
 
 <section class="panel chat-panel">
-
-    <div class="panel-title">JARVIS INTERFACE / COMMAND TERMINAL</div>
+    <div class="panel-title">JARVIS COMMAND TERMINAL</div>
 
     <div class="chat-log" id="chat-log">
         <div class="message jarvis-message">
-            JARVIS: Systems initialized. Good to see you. How may I assist?
+            JARVIS: Initialization complete. All local systems operational. Awaiting instructions.
         </div>
     </div>
 
@@ -448,32 +574,29 @@ footer {
         placeholder="Enter command..."
         autocomplete="off">
 
-        <button class="send-btn" onclick="sendCommand()">
-            SEND
-        </button>
+        <button class="action-btn" onclick="sendCommand()">SEND</button>
     </div>
 
-    <div class="quick-buttons">
+    <div class="controls">
         <button onclick="quickCommand('System status')">SYSTEM STATUS</button>
         <button onclick="quickCommand('Show tasks')">TASKS</button>
         <button onclick="quickCommand('What do you remember?')">MEMORY</button>
         <button onclick="quickCommand('What time is it?')">TIME</button>
         <button onclick="quickCommand('Help')">HELP</button>
     </div>
-
 </section>
 
 </main>
 
 <footer>
-    J.A.R.V.I.S. // PERSONAL INTERFACE // LOCAL COMMAND SYSTEM
+    J.A.R.V.I.S. // PERSONAL INTELLIGENCE // VERSION 2.5
 </footer>
 
 <script>
 
 // STORAGE
 
-function getData(key) {
+function loadData(key) {
     try {
         return JSON.parse(localStorage.getItem(key)) || [];
     } catch {
@@ -490,8 +613,30 @@ function saveData(key, data) {
     }
 }
 
-let tasks = getData("jarvis_tasks");
-let memories = getData("jarvis_memories");
+let tasks = loadData("jarvis_tasks");
+let memories = loadData("jarvis_memories");
+let speechEnabled = true;
+
+// ACTIVITY FEED
+
+function logActivity(message) {
+    const feed = document.getElementById("activity");
+    const entry = document.createElement("div");
+
+    entry.className = "activity-entry";
+
+    const time = document.createElement("span");
+    time.textContent = new Date().toLocaleTimeString() + " // ";
+
+    entry.appendChild(time);
+    entry.appendChild(document.createTextNode(message));
+
+    feed.prepend(entry);
+
+    while (feed.children.length > 30) {
+        feed.removeChild(feed.lastChild);
+    }
+}
 
 // CLOCK
 
@@ -510,49 +655,98 @@ function updateClock() {
         });
 
     document.getElementById("header-time").textContent =
-        now.toLocaleDateString() + " // " + now.toLocaleTimeString();
+        now.toLocaleTimeString();
 }
 
 setInterval(updateClock, 1000);
 updateClock();
 
-// TASK DISPLAY
+// VOICE OUTPUT
 
-function renderTasks() {
-    const list = document.getElementById("task-list");
-    list.innerHTML = "";
+function speak(text) {
+    if (!speechEnabled || !("speechSynthesis" in window)) return;
 
-    tasks.forEach((task, index) => {
-        const li = document.createElement("li");
+    window.speechSynthesis.cancel();
 
-        const name = document.createElement("span");
-        name.textContent = task;
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.rate = 0.95;
+    speech.pitch = 0.9;
+    speech.volume = 1;
 
-        const done = document.createElement("button");
-        done.textContent = "✓";
-        done.title = "Complete task";
-        done.onclick = () => {
-            tasks.splice(index, 1);
-            saveData("jarvis_tasks", tasks);
-            renderTasks();
-        };
+    document.getElementById("voice-bars").classList.add("active");
+    document.getElementById("core-status").textContent = "SPEAKING";
 
-        li.appendChild(name);
-        li.appendChild(done);
-        list.appendChild(li);
-    });
+    speech.onend = () => {
+        document.getElementById("voice-bars").classList.remove("active");
+        document.getElementById("core-status").textContent = "SYSTEM STANDBY";
+    };
 
-    document.getElementById("task-count").textContent =
-        tasks.length + " ACTIVE TASKS";
+    speech.onerror = () => {
+        document.getElementById("voice-bars").classList.remove("active");
+        document.getElementById("core-status").textContent = "SYSTEM STANDBY";
+    };
+
+    window.speechSynthesis.speak(speech);
 }
 
-function renderMemories() {
-    document.getElementById("memory-count").textContent =
-        memories.length + " STORED NOTES";
+function stopSpeech() {
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    document.getElementById("voice-bars").classList.remove("active");
+    document.getElementById("core-status").textContent = "SYSTEM STANDBY";
 }
 
-renderTasks();
-renderMemories();
+function toggleSpeech() {
+    speechEnabled = !speechEnabled;
+
+    document.getElementById("speech-setting").textContent =
+        speechEnabled ? "ON" : "OFF";
+
+    logActivity("Voice output " + (speechEnabled ? "enabled" : "disabled"));
+}
+
+function startListening() {
+    const Recognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!Recognition) {
+        respond("Voice recognition is not supported by this browser. Please use the text terminal.");
+        return;
+    }
+
+    const recognition = new Recognition();
+
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    document.getElementById("core-status").textContent = "LISTENING";
+    logActivity("Microphone activated");
+
+    recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("command-input").value = transcript;
+        sendCommand();
+    };
+
+    recognition.onerror = () => {
+        respond("I encountered a microphone recognition issue.");
+        document.getElementById("core-status").textContent = "SYSTEM STANDBY";
+    };
+
+    recognition.onend = () => {
+        document.getElementById("core-status").textContent = "SYSTEM STANDBY";
+    };
+
+    try {
+        recognition.start();
+    } catch {
+        respond("Microphone could not be started. Please try again.");
+    }
+}
 
 // CHAT
 
@@ -570,8 +764,10 @@ function addMessage(text, sender) {
     log.scrollTop = log.scrollHeight;
 }
 
-function reply(text) {
+function respond(text) {
     addMessage(text, "jarvis");
+    logActivity("Response generated");
+    speak(text);
 }
 
 function sendCommand() {
@@ -583,6 +779,7 @@ function sendCommand() {
     addMessage(command, "user");
     input.value = "";
 
+    logActivity("Command received");
     processCommand(command);
 }
 
@@ -591,34 +788,58 @@ function quickCommand(command) {
     sendCommand();
 }
 
+// TASKS
+
+function renderTasks() {
+    const list = document.getElementById("task-list");
+    list.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        const name = document.createElement("span");
+        const button = document.createElement("button");
+
+        name.textContent = task;
+        button.textContent = "✓";
+        button.title = "Complete task";
+
+        button.onclick = () => {
+            const completed = tasks.splice(index, 1)[0];
+            saveData("jarvis_tasks", tasks);
+            renderTasks();
+            logActivity("Task completed: " + completed);
+        };
+
+        li.appendChild(name);
+        li.appendChild(button);
+        list.appendChild(li);
+    });
+
+    document.getElementById("task-count").textContent = tasks.length;
+}
+
+function renderMemories() {
+    document.getElementById("memory-count").textContent =
+        memories.length;
+}
+
 // COMMAND PROCESSOR
 
 function processCommand(original) {
     const command = original.toLowerCase().trim();
 
-    if (
-        command === "hello jarvis" ||
-        command === "hello" ||
-        command === "hi" ||
-        command === "hey jarvis"
-    ) {
-        reply("Hello. All systems are operational. How can I assist you?");
+    if (["hello", "hello jarvis", "hi", "hey jarvis"].includes(command)) {
+        respond("Hello. All systems are operational. How may I assist you?");
         return;
     }
 
-    if (
-        command.includes("what time") ||
-        command === "time"
-    ) {
-        reply("The current time is " + new Date().toLocaleTimeString());
+    if (command.includes("what time") || command === "time") {
+        respond("The current time is " + new Date().toLocaleTimeString());
         return;
     }
 
-    if (
-        command.includes("what date") ||
-        command.includes("today's date")
-    ) {
-        reply("Today is " + new Date().toDateString());
+    if (command.includes("what date") || command.includes("today's date")) {
+        respond("Today is " + new Date().toDateString());
         return;
     }
 
@@ -626,7 +847,7 @@ function processCommand(original) {
         const task = original.substring(9).trim();
 
         if (!task) {
-            reply("Please specify a task.");
+            respond("Please specify a task.");
             return;
         }
 
@@ -634,19 +855,16 @@ function processCommand(original) {
         saveData("jarvis_tasks", tasks);
         renderTasks();
 
-        reply("Task added successfully: " + task);
+        logActivity("New task added");
+        respond("Task added successfully: " + task);
         return;
     }
 
-    if (
-        command === "show tasks" ||
-        command === "list tasks" ||
-        command === "my tasks"
-    ) {
-        if (tasks.length === 0) {
-            reply("Your task list is currently empty.");
+    if (["show tasks", "list tasks", "my tasks"].includes(command)) {
+        if (!tasks.length) {
+            respond("Your task list is currently empty.");
         } else {
-            reply("Your active tasks: " +
+            respond("Your active tasks: " +
                 tasks.map((t, i) => (i + 1) + ". " + t).join("; "));
         }
         return;
@@ -659,9 +877,9 @@ function processCommand(original) {
             const completed = tasks.splice(number - 1, 1)[0];
             saveData("jarvis_tasks", tasks);
             renderTasks();
-            reply("Task completed: " + completed);
+            respond("Task completed: " + completed);
         } else {
-            reply("I couldn't find that task number.");
+            respond("I couldn't find that task number.");
         }
         return;
     }
@@ -670,7 +888,7 @@ function processCommand(original) {
         const note = original.substring(9).trim();
 
         if (!note) {
-            reply("Please specify what you would like me to remember.");
+            respond("Please specify what you would like me to remember.");
             return;
         }
 
@@ -678,7 +896,8 @@ function processCommand(original) {
         saveData("jarvis_memories", memories);
         renderMemories();
 
-        reply("Information stored in local memory.");
+        logActivity("New memory stored");
+        respond("Information stored in local memory.");
         return;
     }
 
@@ -687,24 +906,24 @@ function processCommand(original) {
         command === "show memories" ||
         command === "show memory"
     ) {
-        if (memories.length === 0) {
-            reply("My memory database is currently empty.");
+        if (!memories.length) {
+            respond("My memory database is currently empty.");
         } else {
-            reply("Stored memories: " +
+            respond("Stored memories: " +
                 memories.map((m, i) => (i + 1) + ". " + m).join("; "));
         }
         return;
     }
 
     if (command === "system status" || command === "status") {
-        reply(
-            "System report: Interface operational. " +
-            "Command processor active. " +
-            "Local storage available: " +
-            (storageAvailable() ? "YES." : "NO.") +
-            " Active tasks: " + tasks.length +
-            ". Stored memories: " + memories.length +
-            ". External AI connection: unavailable."
+        respond(
+            "System report. Interface operational. " +
+            "Command engine active. Local storage " +
+            (storageAvailable() ? "available. " : "unavailable. ") +
+            "Active tasks: " + tasks.length + ". " +
+            "Stored notes: " + memories.length + ". " +
+            "Voice output " + (speechEnabled ? "enabled. " : "disabled. ") +
+            "External AI connection offline."
         );
         return;
     }
@@ -713,7 +932,7 @@ function processCommand(original) {
         tasks = [];
         saveData("jarvis_tasks", tasks);
         renderTasks();
-        reply("All tasks cleared.");
+        respond("All tasks cleared.");
         return;
     }
 
@@ -721,30 +940,28 @@ function processCommand(original) {
         memories = [];
         saveData("jarvis_memories", memories);
         renderMemories();
-        reply("All stored memories cleared.");
+        respond("All stored memories cleared.");
         return;
     }
 
     if (command === "open youtube") {
-        reply("Opening YouTube.");
+        respond("Opening YouTube.");
         window.open("https://www.youtube.com", "_blank");
         return;
     }
 
-    if (
-        command === "help" ||
-        command === "commands"
-    ) {
-        reply(
-            "Available commands: Hello JARVIS, What time is it, " +
-            "Add task [name], Show tasks, Complete task [number], " +
-            "Remember [note], What do you remember, System status, " +
-            "Open YouTube, Clear tasks, Clear memories."
+    if (command === "help" || command === "commands") {
+        respond(
+            "Available commands. Hello JARVIS. What time is it. " +
+            "Add task followed by a task name. Show tasks. " +
+            "Complete task followed by a number. Remember followed by a note. " +
+            "What do you remember. System status. Open YouTube. " +
+            "Clear tasks. Clear memories."
         );
         return;
     }
 
-    reply(
+    respond(
         "I'm sorry, but I don't recognize that command. " +
         "Try saying Help to see my available commands."
     );
@@ -754,26 +971,54 @@ function processCommand(original) {
 
 function storageAvailable() {
     try {
-        const test = "__jarvis_test__";
-        localStorage.setItem(test, "1");
-        localStorage.removeItem(test);
+        localStorage.setItem("__jarvis_test__", "1");
+        localStorage.removeItem("__jarvis_test__");
         return true;
     } catch {
         return false;
     }
 }
 
-document.getElementById("storage-status").textContent =
-    storageAvailable() ? "AVAILABLE" : "UNAVAILABLE";
-
 // ENTER KEY
 
 document.getElementById("command-input")
 .addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        sendCommand();
-    }
+    if (event.key === "Enter") sendCommand();
 });
+
+// INITIALIZATION
+
+function initialize() {
+    renderTasks();
+    renderMemories();
+
+    const available = storageAvailable();
+
+    document.getElementById("storage-status").textContent =
+        available ? "AVAILABLE" : "UNAVAILABLE";
+
+    document.getElementById("storage-status").className =
+        available ? "good" : "warning";
+
+    const voiceAvailable = "speechSynthesis" in window;
+
+    document.getElementById("voice-status").textContent =
+        voiceAvailable ? "AVAILABLE" : "UNAVAILABLE";
+
+    document.getElementById("voice-status").className =
+        voiceAvailable ? "good" : "warning";
+
+    logActivity("JARVIS interface initialized");
+    logActivity("Command processor ready");
+    logActivity("Local memory database loaded");
+
+    setTimeout(() => {
+        document.getElementById("core-status").textContent =
+            "SYSTEM STANDBY";
+    }, 1500);
+}
+
+initialize();
 
 </script>
 
